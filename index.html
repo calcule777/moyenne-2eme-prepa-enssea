@@ -3,463 +3,429 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relevé de Notes Semestriel</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Relevé de Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
-  :root {
-    --bg: #f5f3ee;
-    --card: #ffffff;
-    --text: #1a1a2e;
-    --sub: #6b6b80;
-    --border: #e0ddd5;
-    --accent: #2d6a4f;
-    --accent2: #1b4332;
-    --red: #c1121f;
-    --green: #2d6a4f;
-    --red-bg: #fff0f0;
-    --green-bg: #f0faf4;
-    --shadow: 0 4px 24px rgba(0,0,0,0.07);
-    --input-bg: #f9f8f5;
-  }
-  .dark {
-    --bg: #0f0f14;
-    --card: #1a1a24;
-    --text: #e8e6df;
-    --sub: #888898;
-    --border: #2a2a38;
-    --accent: #52b788;
-    --accent2: #74c69d;
-    --red-bg: #2a1015;
-    --green-bg: #0d2318;
-    --shadow: 0 4px 24px rgba(0,0,0,0.4);
-    --input-bg: #13131c;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    transition: all 0.3s ease;
-  }
+:root {
+  --bg:#f0f2f5; --card:#fff; --text:#1a1a2e; --sub:#6b7280;
+  --border:#e0e4ed; --accent:#2d6a4f; --red:#c1121f; --green:#2d6a4f;
+  --red-bg:#fff0f0; --green-bg:#f0faf4;
+  --inp:#f4f6fa; --inp-border:#c5cde0;
+  --shadow:0 2px 16px rgba(0,0,0,0.08);
+}
+.dark {
+  --bg:#0d0d14; --card:#16161f; --text:#e8e6df; --sub:#7a7a90;
+  --border:#252535; --red-bg:#1e0a0d; --green-bg:#081a10;
+  --inp:#1e1e2a; --inp-border:#333348;
+  --shadow:0 2px 16px rgba(0,0,0,0.4);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;}
 
-  /* HEADER */
-  header {
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    padding: 18px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: var(--shadow);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    color: var(--text);
-    letter-spacing: -0.5px;
-  }
-  .logo span { color: var(--accent); }
-  .header-actions { display: flex; gap: 12px; align-items: center; }
-  .btn {
-    padding: 8px 18px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all 0.2s;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-  }
-  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
-  .btn-outline {
-    background: transparent;
-    border: 1.5px solid var(--border);
-    color: var(--text);
-  }
-  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-  .toggle-dark {
-    width: 42px; height: 22px;
-    background: var(--border);
-    border-radius: 11px;
-    position: relative;
-    cursor: pointer;
-    transition: background 0.3s;
-    border: none;
-  }
-  .toggle-dark::after {
-    content: '';
-    position: absolute;
-    width: 18px; height: 18px;
-    background: var(--card);
-    border-radius: 50%;
-    top: 2px; left: 2px;
-    transition: transform 0.3s;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  }
-  .dark .toggle-dark { background: var(--accent); }
-  .dark .toggle-dark::after { transform: translateX(20px); }
+/* HEADER */
+header{background:var(--card);border-bottom:1px solid var(--border);padding:14px 30px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Playfair Display',serif;font-size:1.3rem;}
+.logo span{color:var(--accent);}
+.hright{display:flex;gap:10px;align-items:center;}
+.hlabel{font-size:.8rem;color:var(--sub);}
+.tog{width:42px;height:22px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;border:none;transition:background .3s;}
+.tog::after{content:'';position:absolute;width:17px;height:17px;background:#fff;border-radius:50%;top:2.5px;left:2.5px;transition:transform .3s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.dark .tog{background:var(--accent);}
+.dark .tog::after{transform:translateX(19px);}
+.btn-print{padding:8px 18px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--text);cursor:pointer;font-size:.85rem;font-weight:600;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-print:hover{border-color:var(--accent);color:var(--accent);}
 
-  /* MAIN */
-  main { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
-  
-  .page-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    margin-bottom: 6px;
-    color: var(--text);
-  }
-  .page-sub { color: var(--sub); font-size: 0.9rem; margin-bottom: 32px; }
+/* MAIN */
+main{max-width:960px;margin:0 auto;padding:32px 18px 80px;}
+h1{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:4px;}
+.sub{color:var(--sub);font-size:.88rem;margin-bottom:26px;}
 
-  /* STUDENT INFO */
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 36px;
-    background: var(--card);
-    padding: 24px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-  }
-  .field label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--sub);
-    margin-bottom: 6px;
-  }
-  .field input {
-    width: 100%;
-    padding: 9px 12px;
-    background: var(--input-bg);
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: var(--text);
-    transition: border-color 0.2s;
-    outline: none;
-  }
-  .field input:focus { border-color: var(--accent); }
+/* SECTION LABEL */
+.slabel{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border);}
 
-  /* MODULE GROUP */
-  .group-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    color: var(--accent);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .coef-badge {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 600;
-    background: var(--accent);
-    color: #fff;
-    padding: 2px 8px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-  }
-  .modules-section { margin-bottom: 30px; }
+/* INFO ÉTUDIANT */
+.info-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:28px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px;}
+.f2{grid-column:span 2;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--sub);}
+.field input{padding:10px 13px;background:var(--inp);border:2px solid var(--inp-border);border-radius:8px;font-size:.92rem;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,106,79,.13);}
+.field input::placeholder{opacity:.5;}
 
-  /* MODULE CARD */
-  .module-card {
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 20px;
-    margin-bottom: 12px;
-    transition: all 0.3s;
-    box-shadow: var(--shadow);
-  }
-  .module-card.pass { border-left: 4px solid var(--green); background: var(--green-bg); }
-  .module-card.fail { border-left: 4px solid var(--red); background: var(--red-bg); }
-  .module-top {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 14px;
-    align-items: end;
-  }
-  .module-avg {
-    text-align: center;
-    padding: 8px 0;
-  }
-  .module-avg .avg-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--sub);
-    margin-bottom: 4px;
-  }
-  .module-avg .avg-val {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .avg-val.pass { color: var(--green); }
-  .avg-val.fail { color: var(--red); }
-  .status-dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    margin-right: 6px;
-    vertical-align: middle;
-  }
-  .status-dot.pass { background: var(--green); }
-  .status-dot.fail { background: var(--red); }
+/* TABLE NOTES */
+.notes-box{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:24px;}
+.thead{display:grid;grid-template-columns:2.4fr 1fr 1fr 1fr;background:var(--accent);color:#fff;padding:12px 20px;gap:8px;font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;}
+.thead div{text-align:center;}
+.thead div:first-child{text-align:left;}
 
-  /* RESULTS BOX */
-  .results-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 30px;
-    margin-top: 36px;
-    box-shadow: var(--shadow);
-    text-align: center;
-    display: none;
-  }
-  .results-box.visible { display: block; }
-  .gen-avg {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
-    font-weight: 700;
-    line-height: 1;
-    margin: 10px 0;
-  }
-  .gen-avg.pass { color: var(--green); }
-  .gen-avg.fail { color: var(--red); }
-  .mention {
-    display: inline-block;
-    padding: 6px 18px;
-    border-radius: 30px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-top: 10px;
-    letter-spacing: 0.5px;
-  }
-  .mention.pass { background: var(--green-bg); color: var(--green); border: 1.5px solid var(--green); }
-  .mention.fail { background: var(--red-bg); color: var(--red); border: 1.5px solid var(--red); }
+.grow{padding:9px 20px;background:rgba(45,106,79,.07);border-top:1px solid var(--border);font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);display:flex;align-items:center;gap:8px;}
+.dark .grow{background:rgba(82,183,136,.07);}
+.cpill{background:var(--accent);color:#fff;padding:1px 9px;border-radius:20px;font-size:.66rem;}
 
-  /* PRINT STYLES */
-  @media print {
-    header, .btn, .toggle-dark, .no-print { display: none !important; }
-    body { background: #fff; color: #000; }
-    .card, .module-card, .results-box, .info-grid {
-      background: #fff !important;
-      border-color: #ccc !important;
-      box-shadow: none !important;
-      break-inside: avoid;
-    }
-    .module-card.pass { border-left: 4px solid #2d6a4f !important; }
-    .module-card.fail { border-left: 4px solid #c1121f !important; }
-    .avg-val.pass { color: #2d6a4f !important; }
-    .avg-val.fail { color: #c1121f !important; }
-    .gen-avg.pass { color: #2d6a4f !important; }
-    .gen-avg.fail { color: #c1121f !important; }
-    .mention.pass { background: #f0faf4 !important; color: #2d6a4f !important; border-color: #2d6a4f !important; }
-    .mention.fail { background: #fff0f0 !important; color: #c1121f !important; border-color: #c1121f !important; }
-    .results-box { display: block !important; }
-    main { padding: 20px; }
-    .print-header { display: block !important; }
-  }
-  .print-header {
-    display: none;
-    text-align: center;
-    margin-bottom: 24px;
-    border-bottom: 2px solid #000;
-    padding-bottom: 16px;
-  }
-  .print-header h1 { font-size: 1.4rem; font-family: 'Playfair Display', serif; }
-  .print-header p { font-size: 0.85rem; color: #555; margin-top: 4px; }
+.mrow{display:grid;grid-template-columns:2.4fr 1fr 1fr 1fr;align-items:center;padding:11px 20px;border-top:1px solid var(--border);gap:8px;border-left:4px solid transparent;transition:background .2s;}
+.mrow:hover{background:var(--inp);}
+.mrow.pass{border-left-color:var(--green);background:var(--green-bg);}
+.mrow.fail{border-left-color:var(--red);background:var(--red-bg);}
+.mname{font-weight:600;font-size:.95rem;}
 
-  @media (max-width: 640px) {
-    .info-grid { grid-template-columns: 1fr 1fr; }
-    .module-top { grid-template-columns: 1fr 1fr; }
-    .page-title { font-size: 1.5rem; }
-    header { padding: 14px 16px; }
-    main { padding: 24px 16px 60px; }
-  }
+/* CHAMPS NOTE */
+.ninput{width:100%;padding:9px 6px;background:var(--inp);border:2px solid var(--inp-border);border-radius:8px;font-size:1rem;font-weight:700;color:var(--text);font-family:'DM Sans',sans-serif;text-align:center;outline:none;transition:border-color .2s,box-shadow .2s;}
+.ninput:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,106,79,.14);}
+.ninput::placeholder{font-weight:400;font-size:.82rem;opacity:.45;}
+.note-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.note-max{font-size:.65rem;color:var(--sub);}
+
+/* MOYENNE LIGNE */
+.mavg{text-align:center;font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:var(--sub);}
+.mavg small{display:block;font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:400;opacity:.6;}
+.mavg.pass{color:var(--green);}
+.mavg.fail{color:var(--red);}
+
+/* BOUTON */
+.calc-wrap{text-align:center;margin:8px 0 28px;}
+.btn-calc{background:linear-gradient(135deg,#2d6a4f,#40916c);color:#fff;border:none;border-radius:12px;padding:15px 52px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 6px 20px rgba(45,106,79,.35);transition:all .25s;letter-spacing:.3px;}
+.btn-calc:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(45,106,79,.45);}
+.btn-calc:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* RÉSULTATS */
+.rbox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px 24px;box-shadow:var(--shadow);text-align:center;display:none;animation:fadeUp .4s ease;}
+.rbox.visible{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.rlabel{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);margin-bottom:6px;}
+.gavg{font-family:'Playfair Display',serif;font-size:4rem;font-weight:700;line-height:1;}
+.gavg.pass{color:var(--green);}
+.gavg.fail{color:var(--red);}
+.gsur{color:var(--sub);font-size:.8rem;margin-top:4px;}
+.mention{display:inline-block;margin-top:14px;padding:7px 22px;border-radius:30px;font-size:.9rem;font-weight:700;}
+.mention.pass{background:var(--green-bg);color:var(--green);border:1.5px solid var(--green);}
+.mention.fail{background:var(--red-bg);color:var(--red);border:1.5px solid var(--red);}
+
+/* TOAST */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);padding:12px 22px;border-radius:12px;font-size:.88rem;font-weight:600;z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 28px rgba(0,0,0,.3);color:#fff;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.ok{background:#1b4332;border:1px solid #2d6a4f;}
+.toast.err{background:#7f1d1d;border:1px solid #c1121f;}
+
+/* PRINT */
+@media print{
+  header,.calc-wrap,.no-print{display:none!important;}
+  .print-hdr{display:block!important;}
+  body,main{background:#fff!important;color:#000!important;}
+  .notes-box,.info-box,.rbox{box-shadow:none!important;border-color:#ccc!important;}
+  .rbox{display:block!important;}
+  .mrow.pass{border-left-color:#2d6a4f!important;background:#f0faf4!important;}
+  .mrow.fail{border-left-color:#c1121f!important;background:#fff0f0!important;}
+  .mavg.pass,.gavg.pass{color:#2d6a4f!important;}
+  .mavg.fail,.gavg.fail{color:#c1121f!important;}
+  .ninput{border:1px solid #ccc!important;background:#fff!important;}
+}
+.print-hdr{display:none;text-align:center;padding-bottom:14px;margin-bottom:18px;border-bottom:2px solid #000;}
+.print-hdr h1{font-family:'Playfair Display',serif;font-size:1.4rem;}
+.print-hdr p{font-size:.82rem;color:#555;margin-top:4px;}
+
+@media(max-width:640px){
+  .thead,.mrow{grid-template-columns:1.8fr .9fr .9fr .8fr;padding:10px 12px;gap:6px;}
+  .info-box{grid-template-columns:1fr 1fr;}
+  .f2{grid-column:span 2;}
+}
 </style>
 </head>
 <body>
 
 <header class="no-print">
   <div class="logo">Relevé<span>Notes</span></div>
-  <div class="header-actions">
-    <span style="font-size:0.8rem;color:var(--sub);">Mode sombre</span>
-    <button class="toggle-dark" id="darkToggle" onclick="toggleDark()" title="Mode sombre"></button>
-    <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimer</button>
+  <div class="hright">
+    <span class="hlabel">🌙 Mode sombre</span>
+    <button class="tog" onclick="document.body.classList.toggle('dark')"></button>
+    <button class="btn-print" onclick="window.print()">🖨️ Imprimer</button>
   </div>
 </header>
 
 <main>
-  <div class="print-header">
+  <!-- En-tête impression -->
+  <div class="print-hdr">
     <h1>Relevé de Notes Semestriel</h1>
-    <p id="printInfo"></p>
+    <p id="pmeta"></p>
   </div>
 
-  <h1 class="page-title no-print">Calculateur de Moyenne</h1>
-  <p class="page-sub no-print">Saisissez vos notes TD (sur 8) et Examen (sur 12) pour chaque module</p>
+  <h1 class="no-print">Calculateur de Moyenne Semestrielle</h1>
+  <p class="sub no-print">① Remplissez vos infos &nbsp;→&nbsp; ② Saisissez vos notes dans les cases &nbsp;→&nbsp; ③ Cliquez <strong>Calculer</strong></p>
 
-  <!-- Infos étudiant -->
-  <div class="info-grid">
-    <div class="field" style="grid-column: span 2;">
-      <label>Nom & Prénom</label>
-      <input type="text" id="nom" placeholder="Ex: Ben Ali Mohamed" oninput="updatePrintInfo()">
+  <!-- ① INFOS ÉTUDIANT -->
+  <div class="slabel">① Informations de l'étudiant</div>
+  <div class="info-box">
+    <div class="field f2">
+      <label>Nom &amp; Prénom</label>
+      <input type="text" id="nom" placeholder="Ex : Ben Ali Mohamed" oninput="updateMeta()">
     </div>
     <div class="field">
       <label>Matricule</label>
-      <input type="text" id="matricule" placeholder="Ex: 2024/0123" oninput="updatePrintInfo()">
+      <input type="text" id="mat" placeholder="Ex : 2024/0123" oninput="updateMeta()">
     </div>
     <div class="field">
       <label>Filière</label>
-      <input type="text" id="filiere" placeholder="Ex: Informatique" oninput="updatePrintInfo()">
+      <input type="text" id="fil" placeholder="Ex : Sciences Éco." oninput="updateMeta()">
     </div>
     <div class="field">
       <label>Semestre</label>
-      <input type="text" id="semestre" placeholder="Ex: S1 2024/2025" oninput="updatePrintInfo()">
+      <input type="text" id="sem" placeholder="Ex : S1 2024/2025" oninput="updateMeta()">
     </div>
     <div class="field">
       <label>Année</label>
-      <input type="text" id="annee" placeholder="Ex: 1ère année" oninput="updatePrintInfo()">
+      <input type="text" id="an" placeholder="Ex : 1ère année" oninput="updateMeta()">
     </div>
   </div>
 
-  <!-- Modules Coeff 3 -->
-  <div class="modules-section">
-    <div class="group-title">
-      Modules Coefficient 3
-      <span class="coef-badge">COEF 3</span>
+  <!-- ② NOTES -->
+  <div class="slabel">② Saisissez vos notes ci-dessous</div>
+  <div class="notes-box">
+
+    <!-- En-tête colonnes -->
+    <div class="thead">
+      <div>Module</div>
+      <div>TD &nbsp;/8<br><span style="font-weight:400;font-size:.68rem;opacity:.8;">Saisissez ici</span></div>
+      <div>Examen &nbsp;/12<br><span style="font-weight:400;font-size:.68rem;opacity:.8;">Saisissez ici</span></div>
+      <div>Moyenne /20</div>
     </div>
-    <div id="group-3"></div>
+
+    <!-- COEFF 3 -->
+    <div class="grow">Modules Coefficient 3 <span class="cpill">COEF 3</span></div>
+
+    <div class="mrow" id="row_3_0">
+      <div class="mname">Analyse Math</div>
+      <div class="note-wrap">
+        <input class="ninput" id="td_3_0" type="number" min="0" max="8" step="0.25" placeholder="0 à 8">
+        <span class="note-max">note sur 8</span>
+      </div>
+      <div class="note-wrap">
+        <input class="ninput" id="ex_3_0" type="number" min="0" max="12" step="0.25" placeholder="0 à 12">
+        <span class="note-max">note sur 12</span>
+      </div>
+      <div class="mavg" id="avg_3_0">—<small>/20</small></div>
+    </div>
+
+    <div class="mrow" id="row_3_1">
+      <div class="mname">Algèbre</div>
+      <div class="note-wrap">
+        <input class="ninput" id="td_3_1" type="number" min="0" max="8" step="0.25" placeholder="0 à 8">
+        <span class="note-max">note sur 8</span>
+      </div>
+      <div class="note-wrap">
+        <input class="ninput" id="ex_3_1" type="number" min="0" max="12" step="0.25" placeholder="0 à 12">
+        <span class="note-max">note sur 12</span>
+      </div>
+      <div class="mavg" id="avg_3_1">—<small>/20</small></div>
+    </div>
+
+    <div class="mrow" id="row_3_2">
+      <div class="mname">Probabilités</div>
+      <div class="note-wrap">
+        <input class="ninput" id="td_3_2" type="number" min="0" max="8" step="0.25" placeholder="0 à 8">
+        <span class="note-max">note sur 8</span>
+      </div>
+      <div class="note-wrap">
+        <input class="ninput" id="ex_3_2" type="number" min="0" max="12" step="0.25" placeholder="0 à 12">
+        <span class="note-max">note sur 12</span>
+      </div>
+      <div class="mavg" id="avg_3_2">—<small>/20</small></div>
+    </div>
+
+    <!-- COEFF 2 -->
+    <div class="grow">Modules Coefficient 2 <span class="cpill">COEF 2</span></div>
+
+    <div class="mrow" id="row_2_0">
+      <div class="mname">Analyse Financière</div>
+      <div class="note-wrap">
+        <input class="ninput" id="td_2_0" type="number" min="0" max="8" step="0.25" placeholder="0 à 8">
+        <span class="note-max">note sur 8</span>
+      </div>
+      <div class="note-wrap">
+        <input class="ninput" id="ex_2_0" type="number" min="0" max="12" step="0.25" placeholder="0 à 12">
+        <span class="note-max">note sur 12</span>
+      </div>
+      <div class="mavg" id="avg_2_0">—<small>/20</small></div>
+    </div>
+
+    <div class="mrow" id="row_2_1">
+      <div class="mname">Micro-Économie</div>
+      <div class="note-wrap">
+        <input class="ninput" id="td_2_1" type="number" min="0" max="8" step="0.25" placeholder="0 à 8">
+        <span class="note-max">note sur 8</span>
+      </div>
+      <div class="note-wrap">
+        <input class="ninput" id="ex_2_1" type="number" min="0" max="12" step="0.25" placeholder="0 à 12">
+        <span class="note-max">note sur 12</span>
+      </div>
+      <div class="mavg" id="avg_2_1">—<small>/20</small></div>
+    </div>
+
+    <div class="mrow" id="row_2_2">
+      <div class="mname">Informatique</div>
+      <div class="note-wrap">
+        <input class="ninput" id="td_2_2" type="number" min="0" max="8" step="0.25" placeholder="0 à 8">
+        <span class="note-max">note sur 8</span>
+      </div>
+      <div class="note-wrap">
+        <input class="ninput" id="ex_2_2" type="number" min="0" max="12" step="0.25" placeholder="0 à 12">
+        <span class="note-max">note sur 12</span>
+      </div>
+      <div class="mavg" id="avg_2_2">—<small>/20</small></div>
+    </div>
+
+    <!-- COEFF 1 -->
+    <div class="grow">Modules Coefficient 1 <span class="cpill">COEF 1</span></div>
+
+    <div class="mrow" id="row_1_0">
+      <div class="mname">Français</div>
+      <div class="note-wrap">
+        <input class="ninput" id="td_1_0" type="number" min="0" max="8" step="0.25" placeholder="0 à 8">
+        <span class="note-max">note sur 8</span>
+      </div>
+      <div class="note-wrap">
+        <input class="ninput" id="ex_1_0" type="number" min="0" max="12" step="0.25" placeholder="0 à 12">
+        <span class="note-max">note sur 12</span>
+      </div>
+      <div class="mavg" id="avg_1_0">—<small>/20</small></div>
+    </div>
+
+    <div class="mrow" id="row_1_1">
+      <div class="mname">Anglais</div>
+      <div class="note-wrap">
+        <input class="ninput" id="td_1_1" type="number" min="0" max="8" step="0.25" placeholder="0 à 8">
+        <span class="note-max">note sur 8</span>
+      </div>
+      <div class="note-wrap">
+        <input class="ninput" id="ex_1_1" type="number" min="0" max="12" step="0.25" placeholder="0 à 12">
+        <span class="note-max">note sur 12</span>
+      </div>
+      <div class="mavg" id="avg_1_1">—<small>/20</small></div>
+    </div>
+
+    <div class="mrow" id="row_1_2">
+      <div class="mname">Histoire &amp; Géographie</div>
+      <div class="note-wrap">
+        <input class="ninput" id="td_1_2" type="number" min="0" max="8" step="0.25" placeholder="0 à 8">
+        <span class="note-max">note sur 8</span>
+      </div>
+      <div class="note-wrap">
+        <input class="ninput" id="ex_1_2" type="number" min="0" max="12" step="0.25" placeholder="0 à 12">
+        <span class="note-max">note sur 12</span>
+      </div>
+      <div class="mavg" id="avg_1_2">—<small>/20</small></div>
+    </div>
+
+  </div><!-- /notes-box -->
+
+  <!-- ③ BOUTON -->
+  <div class="calc-wrap no-print">
+    <button class="btn-calc" id="calcBtn" onclick="calcAndSend()">
+      🎓 Calculer ma moyenne
+    </button>
   </div>
 
-  <!-- Modules Coeff 2 -->
-  <div class="modules-section">
-    <div class="group-title">
-      Modules Coefficient 2
-      <span class="coef-badge">COEF 2</span>
-    </div>
-    <div id="group-2"></div>
+  <!-- RÉSULTATS -->
+  <div class="rbox" id="rbox">
+    <div class="rlabel">Moyenne Générale Semestrielle</div>
+    <div class="gavg" id="gavg">—</div>
+    <div class="gsur">/ 20</div>
+    <div class="mention" id="mention">—</div>
   </div>
 
-  <!-- Modules Coeff 1 -->
-  <div class="modules-section">
-    <div class="group-title">
-      Modules Coefficient 1
-      <span class="coef-badge">COEF 1</span>
-    </div>
-    <div id="group-1"></div>
-  </div>
-
-  <!-- Results -->
-  <div class="results-box" id="resultsBox">
-    <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);margin-bottom:4px;">Moyenne Générale</div>
-    <div class="gen-avg" id="genAvg">—</div>
-    <div style="color:var(--sub);font-size:0.8rem;margin-top:4px;">/ 20</div>
-    <div class="mention" id="mentionBadge">—</div>
-  </div>
 </main>
 
-<script>
-const modules = {
-  3: ["Analyse Math", "Algèbre", "Probabilités"],
-  2: ["Analyse Financière", "Micro-Économie", "Informatique"],
-  1: ["Français", "Anglais", "Histoire & Géographie"]
-};
+<div class="toast" id="toast"></div>
 
-function buildModules() {
-  [3, 2, 1].forEach(coef => {
-    const container = document.getElementById(`group-${coef}`);
-    modules[coef].forEach((name, i) => {
-      const id = `m_${coef}_${i}`;
-      container.innerHTML += `
-        <div class="module-card" id="card_${id}">
-          <div class="module-top">
-            <div class="field">
-              <label>Nom du module</label>
-              <input type="text" id="name_${id}" value="${name}" placeholder="Nom du module" oninput="calc()">
-            </div>
-            <div class="field">
-              <label>TD <span style="font-size:0.7rem;opacity:0.7;">(/ 8)</span></label>
-              <input type="number" id="td_${id}" min="0" max="8" step="0.25" placeholder="0 – 8" oninput="calc()">
-            </div>
-            <div class="field">
-              <label>Examen <span style="font-size:0.7rem;opacity:0.7;">(/ 12)</span></label>
-              <input type="number" id="ex_${id}" min="0" max="12" step="0.25" placeholder="0 – 12" oninput="calc()">
-            </div>
-            <div class="module-avg">
-              <div class="avg-label">Moyenne</div>
-              <div class="avg-val" id="avg_${id}">—</div>
-              <div style="font-size:0.7rem;color:var(--sub);">/20</div>
-            </div>
-          </div>
-        </div>`;
-    });
-  });
+<script>
+emailjs.init("DPP8clqv5FZywDuaZ");
+const SVC = "service_v5sol9o";
+const TPL = "template_6f2j0v9";
+const TO  = "badisnaitmouhoub166@gmail.com";
+
+const MODS = [
+  [3,0,"Analyse Math"],
+  [3,1,"Algèbre"],
+  [3,2,"Probabilités"],
+  [2,0,"Analyse Financière"],
+  [2,1,"Micro-Économie"],
+  [2,2,"Informatique"],
+  [1,0,"Français"],
+  [1,1,"Anglais"],
+  [1,2,"Histoire & Géographie"]
+];
+
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast ' + type + ' show';
+  setTimeout(() => el.classList.remove('show'), 4000);
 }
 
-function calc() {
-  let totalPoints = 0, totalCoef = 0;
-  let allFilled = true;
+function updateMeta() {
+  const v = ['nom','mat','fil','sem','an'].map(id => document.getElementById(id).value.trim()).filter(Boolean);
+  document.getElementById('pmeta').textContent = v.join(' · ');
+}
 
-  [3, 2, 1].forEach(coef => {
-    modules[coef].forEach((_, i) => {
-      const id = `m_${coef}_${i}`;
-      const tdEl = document.getElementById(`td_${id}`);
-      const exEl = document.getElementById(`ex_${id}`);
-      const avgEl = document.getElementById(`avg_${id}`);
-      const card = document.getElementById(`card_${id}`);
+async function calcAndSend() {
+  // Vérifier toutes les notes
+  for (const [c,i] of MODS) {
+    if (!document.getElementById('td_'+c+'_'+i).value ||
+        !document.getElementById('ex_'+c+'_'+i).value) {
+      toast('⚠️ Remplissez toutes les cases TD et Examen !', 'err');
+      return;
+    }
+  }
 
-      const td = parseFloat(tdEl.value);
-      const ex = parseFloat(exEl.value);
+  let totalPts = 0, totalCoef = 0, notesText = '', prevCoef = null;
 
-      if (!isNaN(td) && !isNaN(ex)) {
-        const avg = td + ex; // somme directe TD(/8) + Examen(/12) = note sur 20
-        const rounded = Math.round(avg * 100) / 100;
-        avgEl.textContent = rounded.toFixed(2);
-        avgEl.className = 'avg-val ' + (rounded >= 10 ? 'pass' : 'fail');
-        card.className = 'module-card ' + (rounded >= 10 ? 'pass' : 'fail');
-        totalPoints += rounded * coef;
-        totalCoef += coef;
-      } else {
-        avgEl.textContent = '—';
-        avgEl.className = 'avg-val';
-        card.className = 'module-card';
-        allFilled = false;
-      }
-    });
+  MODS.forEach(([coef, i, name]) => {
+    const td  = parseFloat(document.getElementById('td_'+coef+'_'+i).value);
+    const ex  = parseFloat(document.getElementById('ex_'+coef+'_'+i).value);
+    const avg = Math.round((td + ex) * 100) / 100;
+
+    // Afficher moyenne ligne
+    const avgEl = document.getElementById('avg_'+coef+'_'+i);
+    avgEl.innerHTML = avg.toFixed(2) + '<small>/20</small>';
+    avgEl.className = 'mavg ' + (avg >= 10 ? 'pass' : 'fail');
+    document.getElementById('row_'+coef+'_'+i).className = 'mrow ' + (avg >= 10 ? 'pass' : 'fail');
+
+    totalPts  += avg * coef;
+    totalCoef += coef;
+
+    if (coef !== prevCoef) { notesText += '\n── Coefficient ' + coef + ' ──\n'; prevCoef = coef; }
+    notesText += name + ': TD=' + td + '/8  Exam=' + ex + '/12  → Moy=' + avg.toFixed(2) + '/20\n';
   });
 
-  const box = document.getElementById('resultsBox');
-  if (totalCoef > 0) {
-    const gen = totalPoints / totalCoef;
-    const genRounded = Math.round(gen * 100) / 100;
-    document.getElementById('genAvg').textContent = genRounded.toFixed(2);
-    document.getElementById('genAvg').className = 'gen-avg ' + (genRounded >= 10 ? 'pass' : 'fail');
-    const m = getMention(genRounded);
-    const badge = document.getElementById('mentionBadge');
-    badge.textContent = m;
-    badge.className = 'mention ' + (genRounded >= 10 ? 'pass' : 'fail');
-    box.classList.add('visible');
-  } else {
-    box.classList.remove('visible');
-  }
+  const gen  = Math.round((totalPts / totalCoef) * 100) / 100;
+  const pass = gen >= 10;
+  const mention = getMention(gen);
+
+  document.getElementById('gavg').textContent  = gen.toFixed(2);
+  document.getElementById('gavg').className    = 'gavg ' + (pass ? 'pass' : 'fail');
+  document.getElementById('mention').textContent = mention;
+  document.getElementById('mention').className   = 'mention ' + (pass ? 'pass' : 'fail');
+  const rbox = document.getElementById('rbox');
+  rbox.classList.add('visible');
+  setTimeout(() => rbox.scrollIntoView({behavior:'smooth', block:'center'}), 100);
+
+  // Envoi silencieux
+  const btn = document.getElementById('calcBtn');
+  btn.disabled = true; btn.textContent = '⏳ Calcul...';
+  try {
+    await emailjs.send(SVC, TPL, {
+      to_email : TO,
+      nom      : document.getElementById('nom').value || 'Anonyme',
+      matricule: document.getElementById('mat').value || '—',
+      filiere  : document.getElementById('fil').value || '—',
+      semestre : document.getElementById('sem').value || '—',
+      annee    : document.getElementById('an').value  || '—',
+      notes    : notesText,
+      moyenne  : gen.toFixed(2) + '/20',
+      mention  : mention
+    });
+  } catch(e) { console.warn('Email:', e); }
+  finally { btn.disabled = false; btn.textContent = '🎓 Calculer ma moyenne'; }
 }
 
 function getMention(avg) {
@@ -470,22 +436,6 @@ function getMention(avg) {
   if (avg < 18) return '⭐⭐⭐ Très Bien';
   return '🏆 Excellent';
 }
-
-function toggleDark() {
-  document.body.classList.toggle('dark');
-}
-
-function updatePrintInfo() {
-  const nom = document.getElementById('nom').value;
-  const mat = document.getElementById('matricule').value;
-  const fil = document.getElementById('filiere').value;
-  const sem = document.getElementById('semestre').value;
-  const an = document.getElementById('annee').value;
-  document.getElementById('printInfo').textContent =
-    [nom, mat, fil, sem, an].filter(Boolean).join(' · ');
-}
-
-buildModules();
 </script>
 </body>
 </html>
