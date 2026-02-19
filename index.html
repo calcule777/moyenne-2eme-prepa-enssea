@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relevé de Notes Semestriel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ee;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --sub: #6b6b80;
+    --border: #e0ddd5;
+    --accent: #2d6a4f;
+    --accent2: #1b4332;
+    --red: #c1121f;
+    --green: #2d6a4f;
+    --red-bg: #fff0f0;
+    --green-bg: #f0faf4;
+    --shadow: 0 4px 24px rgba(0,0,0,0.07);
+    --input-bg: #f9f8f5;
+  }
+  .dark {
+    --bg: #0f0f14;
+    --card: #1a1a24;
+    --text: #e8e6df;
+    --sub: #888898;
+    --border: #2a2a38;
+    --accent: #52b788;
+    --accent2: #74c69d;
+    --red-bg: #2a1015;
+    --green-bg: #0d2318;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --input-bg: #13131c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: all 0.3s ease;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--accent); }
+  .header-actions { display: flex; gap: 12px; align-items: center; }
+  .btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .toggle-dark {
+    width: 42px; height: 22px;
+    background: var(--border);
+    border-radius: 11px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s;
+    border: none;
+  }
+  .toggle-dark::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    background: var(--card);
+    border-radius: 50%;
+    top: 2px; left: 2px;
+    transition: transform 0.3s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+  .dark .toggle-dark { background: var(--accent); }
+  .dark .toggle-dark::after { transform: translateX(20px); }
+
+  /* MAIN */
+  main { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+  
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .page-sub { color: var(--sub); font-size: 0.9rem; margin-bottom: 32px; }
+
+  /* STUDENT INFO */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 36px;
+    background: var(--card);
+    padding: 24px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--sub);
+    margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    padding: 9px 12px;
+    background: var(--input-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .field input:focus { border-color: var(--accent); }
+
+  /* MODULE GROUP */
+  .group-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .coef-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .modules-section { margin-bottom: 30px; }
+
+  /* MODULE CARD */
+  .module-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    transition: all 0.3s;
+    box-shadow: var(--shadow);
+  }
+  .module-card.pass { border-left: 4px solid var(--green); background: var(--green-bg); }
+  .module-card.fail { border-left: 4px solid var(--red); background: var(--red-bg); }
+  .module-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 14px;
+    align-items: end;
+  }
+  .module-avg {
+    text-align: center;
+    padding: 8px 0;
+  }
+  .module-avg .avg-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--sub);
+    margin-bottom: 4px;
+  }
+  .module-avg .avg-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .avg-val.pass { color: var(--green); }
+  .avg-val.fail { color: var(--red); }
+  .status-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .status-dot.pass { background: var(--green); }
+  .status-dot.fail { background: var(--red); }
+
+  /* RESULTS BOX */
+  .results-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px;
+    margin-top: 36px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    display: none;
+  }
+  .results-box.visible { display: block; }
+  .gen-avg {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+    margin: 10px 0;
+  }
+  .gen-avg.pass { color: var(--green); }
+  .gen-avg.fail { color: var(--red); }
+  .mention {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+  .mention.pass { background: var(--green-bg); color: var(--green); border: 1.5px solid var(--green); }
+  .mention.fail { background: var(--red-bg); color: var(--red); border: 1.5px solid var(--red); }
+
+  /* PRINT STYLES */
+  @media print {
+    header, .btn, .toggle-dark, .no-print { display: none !important; }
+    body { background: #fff; color: #000; }
+    .card, .module-card, .results-box, .info-grid {
+      background: #fff !important;
+      border-color: #ccc !important;
+      box-shadow: none !important;
+      break-inside: avoid;
+    }
+    .module-card.pass { border-left: 4px solid #2d6a4f !important; }
+    .module-card.fail { border-left: 4px solid #c1121f !important; }
+    .avg-val.pass { color: #2d6a4f !important; }
+    .avg-val.fail { color: #c1121f !important; }
+    .gen-avg.pass { color: #2d6a4f !important; }
+    .gen-avg.fail { color: #c1121f !important; }
+    .mention.pass { background: #f0faf4 !important; color: #2d6a4f !important; border-color: #2d6a4f !important; }
+    .mention.fail { background: #fff0f0 !important; color: #c1121f !important; border-color: #c1121f !important; }
+    .results-box { display: block !important; }
+    main { padding: 20px; }
+    .print-header { display: block !important; }
+  }
+  .print-header {
+    display: none;
+    text-align: center;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 16px;
+  }
+  .print-header h1 { font-size: 1.4rem; font-family: 'Playfair Display', serif; }
+  .print-header p { font-size: 0.85rem; color: #555; margin-top: 4px; }
+
+  @media (max-width: 640px) {
+    .info-grid { grid-template-columns: 1fr 1fr; }
+    .module-top { grid-template-columns: 1fr 1fr; }
+    .page-title { font-size: 1.5rem; }
+    header { padding: 14px 16px; }
+    main { padding: 24px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="no-print">
+  <div class="logo">Relevé<span>Notes</span></div>
+  <div class="header-actions">
+    <span style="font-size:0.8rem;color:var(--sub);">Mode sombre</span>
+    <button class="toggle-dark" id="darkToggle" onclick="toggleDark()" title="Mode sombre"></button>
+    <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimer</button>
+  </div>
+</header>
+
+<main>
+  <div class="print-header">
+    <h1>Relevé de Notes Semestriel</h1>
+    <p id="printInfo"></p>
+  </div>
+
+  <h1 class="page-title no-print">Calculateur de Moyenne</h1>
+  <p class="page-sub no-print">Saisissez vos notes TD (sur 8) et Examen (sur 12) pour chaque module</p>
+
+  <!-- Infos étudiant -->
+  <div class="info-grid">
+    <div class="field" style="grid-column: span 2;">
+      <label>Nom & Prénom</label>
+      <input type="text" id="nom" placeholder="Ex: Ben Ali Mohamed" oninput="updatePrintInfo()">
+    </div>
+    <div class="field">
+      <label>Matricule</label>
+      <input type="text" id="matricule" placeholder="Ex: 2024/0123" oninput="updatePrintInfo()">
+    </div>
+    <div class="field">
+      <label>Filière</label>
+      <input type="text" id="filiere" placeholder="Ex: Informatique" oninput="updatePrintInfo()">
+    </div>
+    <div class="field">
+      <label>Semestre</label>
+      <input type="text" id="semestre" placeholder="Ex: S1 2024/2025" oninput="updatePrintInfo()">
+    </div>
+    <div class="field">
+      <label>Année</label>
+      <input type="text" id="annee" placeholder="Ex: 1ère année" oninput="updatePrintInfo()">
+    </div>
+  </div>
+
+  <!-- Modules Coeff 3 -->
+  <div class="modules-section">
+    <div class="group-title">
+      Modules Coefficient 3
+      <span class="coef-badge">COEF 3</span>
+    </div>
+    <div id="group-3"></div>
+  </div>
+
+  <!-- Modules Coeff 2 -->
+  <div class="modules-section">
+    <div class="group-title">
+      Modules Coefficient 2
+      <span class="coef-badge">COEF 2</span>
+    </div>
+    <div id="group-2"></div>
+  </div>
+
+  <!-- Modules Coeff 1 -->
+  <div class="modules-section">
+    <div class="group-title">
+      Modules Coefficient 1
+      <span class="coef-badge">COEF 1</span>
+    </div>
+    <div id="group-1"></div>
+  </div>
+
+  <!-- Results -->
+  <div class="results-box" id="resultsBox">
+    <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);margin-bottom:4px;">Moyenne Générale</div>
+    <div class="gen-avg" id="genAvg">—</div>
+    <div style="color:var(--sub);font-size:0.8rem;margin-top:4px;">/ 20</div>
+    <div class="mention" id="mentionBadge">—</div>
+  </div>
+</main>
+
+<script>
+const modules = {
+  3: ["Analyse Math", "Algèbre", "Probabilités"],
+  2: ["Analyse Financière", "Micro-Économie", "Informatique"],
+  1: ["Français", "Anglais", "Histoire & Géographie"]
+};
+
+function buildModules() {
+  [3, 2, 1].forEach(coef => {
+    const container = document.getElementById(`group-${coef}`);
+    modules[coef].forEach((name, i) => {
+      const id = `m_${coef}_${i}`;
+      container.innerHTML += `
+        <div class="module-card" id="card_${id}">
+          <div class="module-top">
+            <div class="field">
+              <label>Nom du module</label>
+              <input type="text" id="name_${id}" value="${name}" placeholder="Nom du module" oninput="calc()">
+            </div>
+            <div class="field">
+              <label>TD <span style="font-size:0.7rem;opacity:0.7;">(/ 8)</span></label>
+              <input type="number" id="td_${id}" min="0" max="8" step="0.25" placeholder="0 – 8" oninput="calc()">
+            </div>
+            <div class="field">
+              <label>Examen <span style="font-size:0.7rem;opacity:0.7;">(/ 12)</span></label>
+              <input type="number" id="ex_${id}" min="0" max="12" step="0.25" placeholder="0 – 12" oninput="calc()">
+            </div>
+            <div class="module-avg">
+              <div class="avg-label">Moyenne</div>
+              <div class="avg-val" id="avg_${id}">—</div>
+              <div style="font-size:0.7rem;color:var(--sub);">/20</div>
+            </div>
+          </div>
+        </div>`;
+    });
+  });
+}
+
+function calc() {
+  let totalPoints = 0, totalCoef = 0;
+  let allFilled = true;
+
+  [3, 2, 1].forEach(coef => {
+    modules[coef].forEach((_, i) => {
+      const id = `m_${coef}_${i}`;
+      const tdEl = document.getElementById(`td_${id}`);
+      const exEl = document.getElementById(`ex_${id}`);
+      const avgEl = document.getElementById(`avg_${id}`);
+      const card = document.getElementById(`card_${id}`);
+
+      const td = parseFloat(tdEl.value);
+      const ex = parseFloat(exEl.value);
+
+      if (!isNaN(td) && !isNaN(ex)) {
+        const avg = td + ex; // somme directe TD(/8) + Examen(/12) = note sur 20
+        const rounded = Math.round(avg * 100) / 100;
+        avgEl.textContent = rounded.toFixed(2);
+        avgEl.className = 'avg-val ' + (rounded >= 10 ? 'pass' : 'fail');
+        card.className = 'module-card ' + (rounded >= 10 ? 'pass' : 'fail');
+        totalPoints += rounded * coef;
+        totalCoef += coef;
+      } else {
+        avgEl.textContent = '—';
+        avgEl.className = 'avg-val';
+        card.className = 'module-card';
+        allFilled = false;
+      }
+    });
+  });
+
+  const box = document.getElementById('resultsBox');
+  if (totalCoef > 0) {
+    const gen = totalPoints / totalCoef;
+    const genRounded = Math.round(gen * 100) / 100;
+    document.getElementById('genAvg').textContent = genRounded.toFixed(2);
+    document.getElementById('genAvg').className = 'gen-avg ' + (genRounded >= 10 ? 'pass' : 'fail');
+    const m = getMention(genRounded);
+    const badge = document.getElementById('mentionBadge');
+    badge.textContent = m;
+    badge.className = 'mention ' + (genRounded >= 10 ? 'pass' : 'fail');
+    box.classList.add('visible');
+  } else {
+    box.classList.remove('visible');
+  }
+}
+
+function getMention(avg) {
+  if (avg < 10) return '❌ Ajourné';
+  if (avg < 12) return '✔️ Passable';
+  if (avg < 14) return '⭐ Assez Bien';
+  if (avg < 16) return '⭐⭐ Bien';
+  if (avg < 18) return '⭐⭐⭐ Très Bien';
+  return '🏆 Excellent';
+}
+
+function toggleDark() {
+  document.body.classList.toggle('dark');
+}
+
+function updatePrintInfo() {
+  const nom = document.getElementById('nom').value;
+  const mat = document.getElementById('matricule').value;
+  const fil = document.getElementById('filiere').value;
+  const sem = document.getElementById('semestre').value;
+  const an = document.getElementById('annee').value;
+  document.getElementById('printInfo').textContent =
+    [nom, mat, fil, sem, an].filter(Boolean).join(' · ');
+}
+
+buildModules();
+</script>
+</body>
+</html>
